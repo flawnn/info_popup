@@ -23,8 +23,9 @@ class ArrowIndicatorPainter extends CustomPainter {
     final Paint arrowPaint = Paint();
 
     arrowPaint.strokeWidth = 2.0;
-    arrowPaint.color = arrowColor;
+    arrowPaint.color = Colors.black38;
     arrowPaint.style = PaintingStyle.fill;
+    arrowPaint.isAntiAlias = true;
 
     switch (arrowDirection) {
       case ArrowDirection.up:

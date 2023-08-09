@@ -185,13 +185,13 @@ class _OverlayInfoPopupState extends State<OverlayInfoPopup> {
       case ArrowDirection.up:
         targetCenterOffset = Offset(
           contentDxCenter,
-          targetHeight + widget._indicatorTheme.arrowSize.height,
+          targetHeight,
         );
         break;
       case ArrowDirection.down:
         targetCenterOffset = Offset(
           contentDxCenter,
-          -(contentHeight + widget._indicatorTheme.arrowSize.height),
+          -(contentHeight),
         );
         break;
     }
@@ -375,61 +375,36 @@ class _OverlayInfoPopupState extends State<OverlayInfoPopup> {
                   CompositedTransformFollower(
                     link: widget._layerLink,
                     showWhenUnlinked: false,
-                    offset: _indicatorOffset,
-                    child: AnimatedScale(
-                      scale: _isLayoutMounted ? 1.0 : 0.0,
-                      duration: const Duration(milliseconds: 50),
-                      alignment: Alignment.topCenter,
-                      child: CustomPaint(
-                        size: widget._indicatorTheme.arrowSize,
-                        painter: widget._indicatorTheme.arrowPainter ??
-                            ArrowIndicatorPainter(
-                              arrowDirection:
-                                  widget._indicatorTheme.arrowDirection,
-                              arrowColor: widget._indicatorTheme.color,
-                            ),
-                      ),
-                    ),
-                  ),
-                  CompositedTransformFollower(
-                    link: widget._layerLink,
-                    showWhenUnlinked: false,
                     offset: _bodyOffset,
                     child: AnimatedScale(
                       scale: _isLayoutMounted ? 1.0 : 0.0,
-                      duration: const Duration(milliseconds: 50),
-                      alignment: Alignment.topCenter,
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxWidth: _contentMaxWidth,
-                          maxHeight: _contentMaxHeight,
+                      duration: const Duration(milliseconds: 150),
+                      alignment: Alignment.bottomCenter,
+                      curve: Curves.easeInOutQuart,
+                      child: ClipPath(
+                        clipper: ShapeBorderClipper(
+                          shape: ToolTipCustomShape(),
+                          textDirection: Directionality.maybeOf(context),
                         ),
-                        child: Container(
-                          key: _bodyKey,
-                          decoration: widget._customContent != null
-                              ? null
-                              : BoxDecoration(
-                                  color: widget._contentTheme
-                                      .infoContainerBackgroundColor,
-                                  borderRadius:
-                                      widget._contentTheme.contentBorderRadius,
-                                  boxShadow: const <BoxShadow>[
-                                    BoxShadow(
-                                      color: Color(0xFF808080),
-                                      blurRadius: 1.0,
-                                    ),
-                                  ],
-                                ),
-                          padding: widget._customContent != null
-                              ? null
-                              : widget._contentTheme.contentPadding,
-                          child: SingleChildScrollView(
-                            child: widget._customContent ??
-                                Text(
-                                  widget._contentTitle ?? '',
-                                  style: widget._contentTheme.infoTextStyle,
-                                  textAlign: widget._contentTheme.infoTextAlign,
-                                ),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                          child: DecoratedBox(
+                            key: _bodyKey,
+                            decoration: ShapeDecoration(
+                              color: Colors.black38,
+                              shape: ToolTipCustomShape(),
+                            ),
+                            child: Padding(
+                              padding: widget._customContent != null
+                                  ? EdgeInsets.zero
+                                  : widget._contentTheme.contentPadding
+                                      .add(EdgeInsets.only(bottom: 10)),
+                              child: Text(
+                                widget._contentTitle ?? '',
+                                style: widget._contentTheme.infoTextStyle,
+                                textAlign: widget._contentTheme.infoTextAlign,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -443,4 +418,35 @@ class _OverlayInfoPopupState extends State<OverlayInfoPopup> {
       ),
     );
   }
+}
+
+class ToolTipCustomShape extends ShapeBorder {
+  ToolTipCustomShape({this.usePadding = true});
+  final bool usePadding;
+
+  @override
+  EdgeInsetsGeometry get dimensions =>
+      EdgeInsets.only(bottom: usePadding ? 10 : 0);
+
+  @override
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) => Path();
+
+  @override
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
+    rect =
+        Rect.fromPoints(rect.topLeft, rect.bottomRight - const Offset(0, 10));
+    return Path()
+      ..addRRect(
+          RRect.fromRectAndRadius(rect, Radius.circular(rect.height / 3)))
+      ..moveTo(rect.bottomCenter.dx - 5, rect.bottomCenter.dy)
+      ..relativeLineTo(5, 10)
+      ..relativeLineTo(5, -10)
+      ..close();
+  }
+
+  @override
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {}
+
+  @override
+  ShapeBorder scale(double t) => this;
 }

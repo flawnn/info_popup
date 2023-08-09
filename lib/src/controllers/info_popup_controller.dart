@@ -1,12 +1,12 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:info_popup/info_popup.dart';
 
-import '../painters/arrow_indicator_painter.dart';
-
 part '../overlays/overlay_entry_layout.dart';
-
 part '../painters/high_lighter.dart';
 
 /// Popup manager for the InfoPopup widget.

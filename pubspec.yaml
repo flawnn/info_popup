@@ -15,10 +15,9 @@ topics:
   - alert
   - tooltip
 
-
 environment:
-  sdk: '>=2.18.4 <4.0.0'
-  flutter: '>=2.0.0'
+  sdk: ">=2.18.4 <4.0.0"
+  flutter: ">=2.0.0"
 
 dependencies:
   flutter:

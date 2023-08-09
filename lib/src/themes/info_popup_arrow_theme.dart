@@ -11,7 +11,6 @@ class InfoPopupArrowTheme {
   /// [arrowPainter] is used to customize the painter of the arrow.
   const InfoPopupArrowTheme({
     this.arrowSize = PopupConstants.defaultArrowSize,
-    this.arrowDirection = ArrowDirection.up,
     this.color = Colors.black,
     this.arrowPainter,
   });
@@ -20,7 +19,9 @@ class InfoPopupArrowTheme {
   final Size arrowSize;
 
   /// The [arrowDirection] of the arrow indicator.
-  final ArrowDirection arrowDirection;
+  // Blur mod only works with specific shape that only works with ArrowDirection down
+  // That's why we omit it
+  final ArrowDirection arrowDirection = ArrowDirection.down;
 
   /// The [color] of the arrow indicator.
   final Color color;
@@ -37,7 +38,6 @@ class InfoPopupArrowTheme {
   }) {
     return InfoPopupArrowTheme(
       arrowSize: arrowSize ?? this.arrowSize,
-      arrowDirection: arrowDirection ?? this.arrowDirection,
       color: color ?? this.color,
       arrowPainter: arrowPainter ?? this.arrowPainter,
     );
