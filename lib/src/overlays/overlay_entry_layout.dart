@@ -371,10 +371,10 @@ class _OverlayInfoPopupState extends State<OverlayInfoPopup> {
                 child: SizedBox(
                   height: _dismissBehaviorIsOnTapContent
                       ? null
-                      : context.screenHeight,
+                      : context.screenHeight * 0.3,
                   width: _dismissBehaviorIsOnTapContent
                       ? null
-                      : context.screenWidth,
+                      : context.screenWidth * 0.4,
                   child: Column(
                     children: <Widget>[
                       CompositedTransformFollower(
@@ -446,7 +446,7 @@ class ToolTipCustomShape extends ShapeBorder {
         Rect.fromPoints(rect.topLeft, rect.bottomRight - const Offset(0, 10));
     return Path()
       ..addRRect(
-          RRect.fromRectAndRadius(rect, Radius.circular(rect.height / 3)))
+          RRect.fromRectAndRadius(rect, Radius.circular(rect.height / 5)))
       ..moveTo(rect.bottomCenter.dx - 5, rect.bottomCenter.dy)
       ..relativeLineTo(5, 10)
       ..relativeLineTo(5, -10)
