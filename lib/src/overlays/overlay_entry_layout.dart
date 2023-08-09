@@ -402,7 +402,8 @@ class _OverlayInfoPopupState extends State<OverlayInfoPopup> {
                                 padding: widget._customContent != null
                                     ? EdgeInsets.zero
                                     : widget._contentTheme.contentPadding
-                                        .add(EdgeInsets.only(bottom: 10)),
+                                        .add(EdgeInsets.only(bottom: 5))
+                                        .add(EdgeInsets.all(5)),
                                 child: Text(
                                   widget._contentTitle ?? '',
                                   style: widget._contentTheme.infoTextStyle,
