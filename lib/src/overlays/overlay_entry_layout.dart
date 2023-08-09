@@ -339,78 +339,87 @@ class _OverlayInfoPopupState extends State<OverlayInfoPopup> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipPath(
-      clipper: widget._enableHighlight
-          ? _HighLighter(
-              area: Rect.fromLTWH(
-                _targetWidgetRect.left,
-                _targetWidgetRect.top,
-                _targetWidgetRect.width,
-                _targetWidgetRect.height,
-              ),
-              padding: widget._highLightTheme.padding,
-              radius: widget._highLightTheme.radius,
-            )
-          : null,
-      child: Align(
-        child: CompositedTransformFollower(
-          link: widget._layerLink,
-          showWhenUnlinked: false,
-          offset: _areaOffset,
-          child: Material(
-            color: widget._enableHighlight
-                ? widget._highLightTheme.backgroundColor
-                : widget._areaBackgroundColor,
-            type: (!widget._enableHighlight &&
-                    widget._areaBackgroundColor == Colors.transparent)
-                ? MaterialType.transparency
-                : MaterialType.canvas,
-            child: SizedBox(
-              height:
-                  _dismissBehaviorIsOnTapContent ? null : context.screenHeight,
-              width:
-                  _dismissBehaviorIsOnTapContent ? null : context.screenWidth,
-              child: Column(
-                children: <Widget>[
-                  CompositedTransformFollower(
-                    link: widget._layerLink,
-                    showWhenUnlinked: false,
-                    offset: _bodyOffset,
-                    child: AnimatedScale(
-                      scale: _isLayoutMounted ? 1.0 : 0.0,
-                      duration: const Duration(milliseconds: 150),
-                      alignment: Alignment.bottomCenter,
-                      curve: Curves.easeInOutQuart,
-                      child: ClipPath(
-                        clipper: ShapeBorderClipper(
-                          shape: ToolTipCustomShape(),
-                          textDirection: Directionality.maybeOf(context),
-                        ),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                          child: DecoratedBox(
-                            key: _bodyKey,
-                            decoration: ShapeDecoration(
-                              color: Colors.black38,
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: ClipPath(
+          clipper: widget._enableHighlight
+              ? _HighLighter(
+                  area: Rect.fromLTWH(
+                    _targetWidgetRect.left,
+                    _targetWidgetRect.top,
+                    _targetWidgetRect.width,
+                    _targetWidgetRect.height,
+                  ),
+                  padding: widget._highLightTheme.padding,
+                  radius: widget._highLightTheme.radius,
+                )
+              : null,
+          child: Align(
+            child: CompositedTransformFollower(
+              link: widget._layerLink,
+              showWhenUnlinked: false,
+              offset: _areaOffset,
+              child: Material(
+                color: widget._enableHighlight
+                    ? widget._highLightTheme.backgroundColor
+                    : widget._areaBackgroundColor,
+                type: (!widget._enableHighlight &&
+                        widget._areaBackgroundColor == Colors.transparent)
+                    ? MaterialType.transparency
+                    : MaterialType.canvas,
+                child: SizedBox(
+                  height: _dismissBehaviorIsOnTapContent
+                      ? null
+                      : context.screenHeight,
+                  width: _dismissBehaviorIsOnTapContent
+                      ? null
+                      : context.screenWidth,
+                  child: Column(
+                    children: <Widget>[
+                      CompositedTransformFollower(
+                        link: widget._layerLink,
+                        showWhenUnlinked: false,
+                        offset: _bodyOffset,
+                        child: AnimatedScale(
+                          scale: _isLayoutMounted ? 1.0 : 0.0,
+                          duration: const Duration(milliseconds: 150),
+                          alignment: Alignment.bottomCenter,
+                          curve: Curves.easeInOutQuart,
+                          child: ClipPath(
+                            clipper: ShapeBorderClipper(
                               shape: ToolTipCustomShape(),
+                              textDirection: Directionality.maybeOf(context),
                             ),
-                            child: Padding(
-                              padding: widget._customContent != null
-                                  ? EdgeInsets.zero
-                                  : widget._contentTheme.contentPadding
-                                      .add(EdgeInsets.only(bottom: 10)),
-                              child: Text(
-                                widget._contentTitle ?? '',
-                                style: widget._contentTheme.infoTextStyle,
-                                textAlign: widget._contentTheme.infoTextAlign,
+                            child: BackdropFilter(
+                              filter:
+                                  ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                              child: DecoratedBox(
+                                key: _bodyKey,
+                                decoration: ShapeDecoration(
+                                  color: Colors.black38,
+                                  shape: ToolTipCustomShape(),
+                                ),
+                                child: Padding(
+                                  padding: widget._customContent != null
+                                      ? EdgeInsets.zero
+                                      : widget._contentTheme.contentPadding
+                                          .add(EdgeInsets.only(bottom: 10)),
+                                  child: Text(
+                                    widget._contentTitle ?? '',
+                                    style: widget._contentTheme.infoTextStyle,
+                                    textAlign:
+                                        widget._contentTheme.infoTextAlign,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  )
-                ],
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
