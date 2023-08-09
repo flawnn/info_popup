@@ -106,7 +106,16 @@ class _OverlayInfoPopupState extends State<OverlayInfoPopup> {
             clickPosition.dx <= contentPosition.dx + contentSize.width &&
             clickPosition.dy >= contentPosition.dy &&
             clickPosition.dy <= contentPosition.dy + contentSize.height) {
-          widget._hideOverlay();
+          setState(() {
+            _isLayoutMounted = false;
+          });
+
+          Future.delayed(
+            Duration(milliseconds: 150),
+            () {
+              widget._hideOverlay();
+            },
+          );
         }
         break;
       case PopupDismissTriggerBehavior.onTapArea:
@@ -118,7 +127,16 @@ class _OverlayInfoPopupState extends State<OverlayInfoPopup> {
         }
         break;
       case PopupDismissTriggerBehavior.anyWhere:
-        widget._hideOverlay();
+        setState(() {
+          _isLayoutMounted = false;
+        });
+
+        Future.delayed(
+          Duration(milliseconds: 150),
+          () {
+            widget._hideOverlay();
+          },
+        );
         break;
       case PopupDismissTriggerBehavior.manuel:
         // do nothing
